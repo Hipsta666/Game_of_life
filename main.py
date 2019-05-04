@@ -39,17 +39,11 @@ class App(Frame):
         self.WIDTH = self.new_WIDTH / int(self.width_window.get())
         self.HEIGHT = self.new_WIDTH / int(self.height_window.get())
 
-        if self.WIDTH <= self.HEIGHT:
-            self.MARGIN = self.WIDTH * (1 / 10)
-        else:
-            self.MARGIN = self.HEIGHT * (1 / 10)
-
         self.label.destroy()
         self.char_x.destroy()
         self.width_window.destroy()
         self.height_window.destroy()
         self.btn_create.destroy()
-        root.configure(bg='black')
         root.geometry(str(self.new_WIDTH) + 'x' + str(self.new_HEIGHT) + "+300+0")
 
         self.w = Canvas(root, width=self.new_WIDTH, height=self.new_HEIGHT)
@@ -64,12 +58,12 @@ class App(Frame):
         self.btn_start = Button(self, width=6)
         self.btn_start['text'] = 'Старт'
         self.btn_start.grid(row=0, column=0, sticky=W)
-        self.btn_start['command'] = None
+        self.btn_start['command'] = self.start_generations
 
         self.btn_next = Button(self, width=18)
         self.btn_next['text'] = 'Следующее поколение'
         self.btn_next.grid(row=0, column=1, sticky=W)
-        self.btn_next['command'] = None
+        self.btn_next['command'] = self.next_generation
 
         self.btn_clean = Button(self, width=7)
         self.btn_clean['text'] = 'Очистить'
@@ -79,17 +73,16 @@ class App(Frame):
         self.btn_save = Button(self, width=20)
         self.btn_save['text'] = 'Сохранить 1-е поколение'
         self.btn_save.grid(row=0, column=3, sticky=W)
-        self.btn_save['command'] = None
+        self.btn_save['command'] = self.save_grnrration
 
         self.btn_downloads = Button(self, width=20)
         self.btn_downloads['text'] = 'Загрузить 1-е поколение'
         self.btn_downloads.grid(row=0, column=4, sticky=W)
-        self.btn_downloads['command'] = None
+        self.btn_downloads['command'] = self.load_generation
 
         self.lbl = Label(self, width=15)
-        self.lbl['text'] = 'Поколение: 100000'
+        self.lbl['text'] = 'Поколение: ' + str(self.generation)
         self.lbl.grid(row=0, column=5, sticky=W)
-
 
         root.bind('<Button-1>', self.click)
 
@@ -100,21 +93,16 @@ class App(Frame):
             y_click = root.winfo_pointery() - root.winfo_rooty() - 24
             column = int(y_click // self.HEIGHT)
             row = int(x_click // self.WIDTH)
-            self.position_click = (x_click, y_click)
             print('row ' + str(row) + ', ' + 'column ' + str(column))
+
             cells = []
             with open('f.txt', 'r+') as self.file:
-                a = int(self.new_WIDTH / self.WIDTH)  # количество клток в строке и столбце
+                a = int(self.new_WIDTH / self.WIDTH)                        # количество клеток в строке и столбце
                 self.create_generation(self.file, cells, row, column, self.WIDTH, a, self.w)
-
-
-
-
 
 
     @staticmethod
     def create_generation(file, lst, row, column, WIDTH, num_of_cell, draw):
-
         info = file.read()
         if info == '':
             for rw in range(num_of_cell):
@@ -143,17 +131,23 @@ class App(Frame):
                                         row * int(WIDTH) + int(WIDTH),
                                         column * int(WIDTH) + int(WIDTH),
                                         fill='#000', outline='#555666')
-
             info_json.append(new_lst)
             with open('f.txt', 'w') as file:
                 file.write(json.dumps(info_json))
 
-
-
-
-
-
     def clean_field(self):
+        pass
+
+    def next_generation(self):
+        pass
+
+    def start_generations(self):
+        pass
+
+    def load_generation(self):
+        pass
+
+    def save_grnrration(self):
         pass
 
 
